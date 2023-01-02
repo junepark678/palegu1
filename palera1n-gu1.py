@@ -1,5 +1,5 @@
 import urwid
-import os, sys
+import os
 
 choices = u'Semi-Tethered Tweaks Start Quit'.split()
 
