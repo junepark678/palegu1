@@ -36,7 +36,7 @@ def invoke_pale(button):
     if checkra1n:
         with open(".torun", "x") as file:
             file.writelines("/bin/sh " + os.getcwd() + "/checkra1n/palera1n.sh" + " " + edit.get_edit_text())
-
+        exit_program(button)
     with open(".torun", "x") as file:
         file.writelines("/bin/sh " + os.getcwd() + "/palera1n/palera1n.sh" + (" --semi-tethered" if semistatus else "") + (" --tweaks" if tweakstatus else "") + " " + edit.get_edit_text())
     exit_program(button)
@@ -88,7 +88,7 @@ def item_chosen(button, choice):
     
     if choice == "Checkra1n":
         checkra1n = not checkra1n
-        response = urwid.Text(["You selected Version and it is now set to ", str(checkra1n)])
+        response = urwid.Text(["You selected Checkra1n and it is now set to ", str(checkra1n)])
         done = urwid.Button(u'Ok')
         urwid.connect_signal(done, 'click', go_back)
         original_wid = main.original_widget
