@@ -1,3 +1,7 @@
 [submodule "palera1n"]
 	path = palera1n
 	url = https://github.com/palera1n/palera1n
+[submodule "checkra1n-pale"]
+	path = checkra1n
+	url = https://github.com/palera1n/palera1n
+	branch = checkra1n

@@ -1,7 +1,10 @@
 import urwid
 import os
 
-choices = u'Semi-Tethered Tweaks Start Quit'.split()
+choices = u'Restore-RootFS Semi-Tethered Tweaks Start Quit Checkra1n'.split()
+
+
+edit = urwid.Edit("", edit_text="", multiline=False, align="left", wrap="space", allow_tab=False)
 
 def menu(title, choices):
     body = [urwid.Text(title), urwid.Divider()]
@@ -9,11 +12,14 @@ def menu(title, choices):
         button = urwid.Button(c)
         urwid.connect_signal(button, 'click', item_chosen, c)
         body.append(urwid.AttrMap(button, None, focus_map='reversed'))
+    body.append(urwid.Divider())
+    body.append(urwid.Text("Version: (None if starting in normal mode)"))
+    body.append(edit)
     return urwid.ListBox(urwid.SimpleFocusListWalker(body))
 
 semistatus = False
 tweakstatus = False
-
+checkra1n = False
 
 def exit_program(button):
     raise urwid.ExitMainLoop()
@@ -25,8 +31,18 @@ def invoke_pale(button):
     except:
         pass
     with open(".torun", "x") as file:
-        file.writelines("/bin/sh " + os.getcwd() + "/palera1n/palera1n.sh" + (" --semi-tethered" if semistatus else "") + (" --tweaks" if tweakstatus else ""))
+        file.writelines("/bin/sh " + os.getcwd() + "/palera1n/palera1n.sh" + (" --semi-tethered" if semistatus else "") + (" --tweaks" if tweakstatus else "") + " " + edit.get_edit_text())
     exit_program(button)
+
+def restore_pale(button):
+    try:
+        os.remove(".torun")
+    except:
+        pass
+    with open(".torun", "x") as file:
+        file.writelines("/bin/sh " + os.getcwd() + "/palera1n/palera1n.sh" + " --restore-rootfs")
+    exit_program(button)
+
 
 original_wid = None
 
@@ -34,7 +50,7 @@ def go_back(button):
     main.original_widget = original_wid
 
 def item_chosen(button, choice):
-    global original_wid, semistatus, tweakstatus
+    global original_wid, semistatus, tweakstatus, checkra1n
     if choice == "Quit":
         exit_program(button)
     if choice == "Semi-Tethered":
@@ -53,8 +69,19 @@ def item_chosen(button, choice):
         original_wid = main.original_widget
         main.original_widget = urwid.Filler(urwid.Pile([response, urwid.AttrMap(done, None, focus_map='reversed')]))
 
+    if choice == "Restore-RootFS":
+        restore_pale(button)
+
     if choice == "Start":
         invoke_pale(button)
+    
+    if choice == "Checkra1n":
+        checkra1n = not checkra1n
+        response = urwid.Text(["You selected Version and it is now set to ", str(checkra1n)])
+        done = urwid.Button(u'Ok')
+        urwid.connect_signal(done, 'click', go_back)
+        original_wid = main.original_widget
+        main.original_widget = urwid.Filler(urwid.Pile([response, urwid.AttrMap(done, None, focus_map='reversed')]))
         
 
 
