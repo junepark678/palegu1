@@ -26,10 +26,17 @@ def exit_program(button):
 
 def invoke_pale(button):
     global semistatus, tweakstatus
+
+
+
     try:
         os.remove(".torun")
     except:
         pass
+    if checkra1n:
+        with open(".torun", "x") as file:
+            file.writelines("/bin/sh " + os.getcwd() + "/checkra1n/palera1n.sh" + " " + edit.get_edit_text())
+
     with open(".torun", "x") as file:
         file.writelines("/bin/sh " + os.getcwd() + "/palera1n/palera1n.sh" + (" --semi-tethered" if semistatus else "") + (" --tweaks" if tweakstatus else "") + " " + edit.get_edit_text())
     exit_program(button)
@@ -52,6 +59,10 @@ def go_back(button):
 def item_chosen(button, choice):
     global original_wid, semistatus, tweakstatus, checkra1n
     if choice == "Quit":
+        try:
+            os.remove(".torun")
+        except:
+            pass
         exit_program(button)
     if choice == "Semi-Tethered":
         semistatus = not semistatus
