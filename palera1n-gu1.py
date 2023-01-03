@@ -47,7 +47,7 @@ def restore_pale(button):
     except:
         pass
     with open(".torun", "x") as file:
-        file.writelines("/bin/sh " + os.getcwd() + "/palera1n/palera1n.sh" + " --restore-rootfs")
+        file.writelines("/bin/sh " + os.getcwd() + "/palera1n/palera1n.sh" + " --restorerootfs " + edit.get_edit_text())
     exit_program(button)
 
 
